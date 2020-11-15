@@ -4,11 +4,10 @@ import Item from '../assets/products/item.png'
 import LoadingSpinner from '../components/UI/LoadingSpinner'
 import Container from '../components/UI/Container'
 import { addToCart } from '../actions/action'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Hero from '../assets/hero.png'
 
 const HomePage = () => {
-    const {cart} = useSelector(state => state);
     const dispatch = useDispatch();
 
     const [products, setProducts] = useState([

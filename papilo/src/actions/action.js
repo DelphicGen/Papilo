@@ -1,5 +1,6 @@
 import * as actions from './type'
 
+// Cart
 export const addToCart = product => ({
     type: actions.ADD_TO_CART,
     payload: {
@@ -31,4 +32,32 @@ export const removeProduct = (id) => ({
     payload: {
         id
     }
+})
+
+// Alert
+export const success = message => ({
+    type: actions.ALERT_SUCCESS,
+    payload: {
+        message
+    }
+})
+
+export const error = message => ({
+    type: actions.ALERT_ERROR,
+    payload: {
+        message
+    }
+})
+
+// Auth
+export const saveRole = (role) => ({
+    type: actions.SAVE_ROLE,
+    payload: {
+        role
+    }
+})
+
+export const removeRole = () => ({
+    type: actions.REMOVE_ROLE,
+    payload: {}
 })

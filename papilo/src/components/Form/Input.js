@@ -39,7 +39,7 @@ const Input = props => {
     const [hidden, setHidden] = useState(true)
 
     useEffect(() => {
-        onInput(id, value, isValid)
+        onInput && onInput(id, value, isValid)
     }, [onInput, id, value, isValid])
 
     const changeHandler = event => {
@@ -60,15 +60,15 @@ const Input = props => {
             style={{ width: props.width, maxWidth: props.maxWidth }}
             id={props.id}
             type={props.type !== 'password' ? props.type : hidden ? 'password' : 'text'}
-            value={inputState.value}
+            value={props.value ? props.value : inputState.value}
             placeholder={props.placeholder}
             required={props.required}
-            onChange={changeHandler}
+            onChange={props.handleChange ? props.handleChange : changeHandler}
             onBlur={touchHandler} />
     )
 
     let errorTextElement
-    if (!inputState.isValid && inputState.isTouched) {
+    if ((props.value && props.value.length === 0) || (!props.value && !inputState.isValid && inputState.isTouched)) {
         errorTextElement = <p className="text-xs text-red-700 font-medium tracking-wider mt-2 mb-3" style={props.width && {width: props.width}}>{props.errorText}</p>
     }
 
@@ -99,14 +99,14 @@ const Input = props => {
             <div className="relative">
                 {inputState.value !== '' && (
                     <Clear
-                        className="text-green-700 absolute cursor-pointer"
+                        className="text-red-700 absolute cursor-pointer"
                         fontSize="small"
-                        style={props.customClear || { right: 8, top: 10 }}
+                        style={props.customClear || { right: 8, top: 5 }}
                         onClick={clearHandler} />
                 )}
                 {inputElement}
                 {props.id === 'query' &&
-                    <button className="bg-green-700 absolute top-0 right-0 rounded-r-md text-gray-100 flex items-center px-2 cursor-pointer" style={{ height: 39 }} onClick={props.search}>
+                    <button className="bg-red-700 absolute top-0 right-0 rounded-r-md text-gray-100 flex items-center px-2 cursor-pointer" style={{ height: 39 }} onClick={props.search}>
                         <SearchIcon />
                     </button>
                 }

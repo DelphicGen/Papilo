@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import Logo from '../../assets/footer/footer-logo.png'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom'
+import Anchors from './Anchors';
 
 const Navbar = () => {
     
@@ -11,8 +11,7 @@ const Navbar = () => {
     const handleScroll = useCallback(() => {
         const currentScrollPos = window.pageYOffset
         const visible = prevScrollPos > currentScrollPos
-
-        if(currentScrollPos > 0){
+        if(currentScrollPos > 50){
             setNavVisible(visible)
         }
 
@@ -20,7 +19,6 @@ const Navbar = () => {
     }, [prevScrollPos])
 
     useEffect(() => {
-        setNavVisible(true)
         window.addEventListener('scroll', handleScroll)
 
         return () => window.removeEventListener('scroll', handleScroll)
@@ -34,10 +32,7 @@ const Navbar = () => {
             </Link>
             
             <div>
-                <Link to="/cart">
-                    <ShoppingCartIcon fontSize="large" className="mr-5" />
-                </Link>
-                {/* <Link to="/" >Login</Link> */}
+                <Anchors />
             </div>
         </div>
     )

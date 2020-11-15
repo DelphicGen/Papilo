@@ -13,48 +13,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-// const inputReducer = (state, action) => {
-//     switch (action.type) {
-//         case 'CHANGE':
-//             return {
-//                 ...state,
-//                 value: action.val,
-//                 isValid: validate(action.val, action.validators)
-//             }
-//         case 'TOUCH':
-//             return {
-//                 ...state,
-//                 isTouched: true
-//             }
-//         case 'CLEAR':
-//             return {
-//                 ...state,
-//                 value: ''
-//             }
-//         default:
-//             return state
-//     }
-// }
-
 
 const CustomeSelect = props => {
 
-    // const [inputState, dispatch] = useReducer(inputReducer, {
-    //     value: props.value || '',
-    //     isValid: props.valid || false,
-    //     isTouched: false,
-    // })
-
     const classes = useStyles();
-
-    // const { id, onInput } = props
-    // const { value, isValid } = inputState
-
-    // const [hidden, setHidden] = useState(true)
-
-    // useEffect(() => {
-    //     onInput(id, value, isValid)
-    // }, [onInput, id, value, isValid])
 
     return (
         <FormControl  className={classes.formControl}>
