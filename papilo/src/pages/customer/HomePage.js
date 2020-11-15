@@ -1,80 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import Product from '../../components/UI/Product'
-import Item from '../../assets/products/item.png'
 import LoadingSpinner from '../../components/UI/LoadingSpinner'
 import Container from '../../components/UI/Container'
 import { addToCart } from '../../actions/action'
 import { useDispatch } from 'react-redux'
 import Hero from '../../assets/hero.png'
+import Axios from 'axios'
 
 const HomePage = () => {
     const dispatch = useDispatch();
 
-    const [products, setProducts] = useState([
-        {
-            id: '1',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '2',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '3',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '4',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '5',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '6',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '7',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '8',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        },
-        {
-            id: '9',
-            name: 'Lorem ipsum',
-            details: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-            price: 50000,
-            image: Item
-        }
-    ])
+    const [products, setProducts] = useState([])
+
+    useEffect(() => {
+
+        Axios({
+            method: 'POST',
+            url: 'http://localhost:4000/product/get',
+        })
+            .then(response => {
+                setProducts(response.data.products)
+            })
+    }, [])
 
     return (
         <Container>
@@ -91,7 +38,7 @@ const HomePage = () => {
                 <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-10">
                 {
                     products ? 
-                    products.map((product, index) => <Product key={index} id={product.id} name={product.name} details={product.details} price={product.price} image={product.image} onCartButtonClicked={() => dispatch(addToCart(product))}  />) :
+                    products.map((product, index) => <Product key={index} id={product.id} name={product.productName} price={product.price} image={product.image} onCartButtonClicked={() => dispatch(addToCart(product))}  />) :
                     <LoadingSpinner style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
                 }
                 </div>

@@ -15,8 +15,8 @@ const Cart = () => {
     const [totalPrice, setTotalPrice] = useState(0)
 
     useEffect(() => {
-        let temp = 0;
-
+        let temp = 0
+        
         cart?.forEach(product => {
             temp += product.price * product.count
         })

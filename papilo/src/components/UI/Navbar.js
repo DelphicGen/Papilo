@@ -11,7 +11,7 @@ const Navbar = () => {
     const handleScroll = useCallback(() => {
         const currentScrollPos = window.pageYOffset
         const visible = prevScrollPos > currentScrollPos
-        if(currentScrollPos > 50){
+        if(currentScrollPos > 250){
             setNavVisible(visible)
         }
 
@@ -23,6 +23,10 @@ const Navbar = () => {
 
         return () => window.removeEventListener('scroll', handleScroll)
     }, [handleScroll])
+
+    useEffect(() => {
+        setNavVisible(true)
+    }, [])
 
     return (
         <div className="flex items-center justify-between p-5 fixed top-0 w-full z-10 transition ease-in duration-300 bg-red-700 text-white" style={{ transform: !navVisible && 'translateY(-120px)' }}>

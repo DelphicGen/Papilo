@@ -25,9 +25,9 @@ const Register = props => {
         }
     }, false)
 
-    const [role, setRole] = useState()
-    const [storeName, setStoreName] = useState()
-    const [companyName, setCompanyName] = useState()
+    const [role, setRole] = useState('')
+    const [storeName, setStoreName] = useState('')
+    const [companyName, setCompanyName] = useState('')
 
     const submitHandler = event => {
         event.preventDefault()
@@ -49,10 +49,9 @@ const Register = props => {
             headers: {'Content-Type': 'application/json' }
         })
             .then(response => {
-                console.log(response)
                 if(response.data.status === 'ok') {
                     dispatch(success('You are now registered'))
-                    // localStorage.setItem('role', response.data.role)
+                    localStorage.setItem('token', response.data.token)
                     dispatch(saveRole(response.data.role))
                     props.history.push('/')
                 } else dispatch(error('Email is taken'))

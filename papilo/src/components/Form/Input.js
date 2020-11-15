@@ -19,7 +19,8 @@ const inputReducer = (state, action) => {
         case 'CLEAR':
             return {
                 ...state,
-                value: ''
+                value: action.val,
+                isValid: validate(action.val, action.validators)
             }
         default:
             return state
@@ -42,6 +43,14 @@ const Input = props => {
         onInput && onInput(id, value, isValid)
     }, [onInput, id, value, isValid])
 
+    useEffect(() => {
+        if(props.reset) {
+            clearHandler()
+            props.setReset(false)
+        }
+
+    }, [props])
+
     const changeHandler = event => {
         dispatch({ type: 'CHANGE', val: event.target.value, validators: props.validators })
     }
@@ -51,7 +60,7 @@ const Input = props => {
     }
 
     const clearHandler = () => {
-        dispatch({ type: 'CLEAR' })
+        dispatch({ type: 'CLEAR', val: '', validators: props.validators })
     }
 
     const inputElement = (

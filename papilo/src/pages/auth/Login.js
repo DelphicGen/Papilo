@@ -23,7 +23,7 @@ const Login = props => {
             isValid: false
         }
     }, false)
-    const [role, setRole] = useState()
+    const [role, setRole] = useState('')
 
     const submitHandler = event => {
         event.preventDefault()
@@ -45,11 +45,14 @@ const Login = props => {
             .then(response => {
                 if(response.data.status === 'ok') {
                     dispatch(success('Login successful'))
-                    // localStorage.setItem('role', response.data.role)
+                    localStorage.setItem('token', response.data.token)
                     dispatch(saveRole(response.data.role))
                     props.history.push('/')
                 } else dispatch(error('Wrong credentials'))
             })
+    }
+    const handleRole = (e) => {
+        setRole(e.target.value)
     }
 
     return (
@@ -83,7 +86,7 @@ const Login = props => {
                         className="mb-5"
                         required />
 
-                    <CustomRadio label="Role" name="role" value={role} handleChange={(e) => setRole(e.target.value)} options={['Customer', 'Seller', 'Transport Company']} />
+                    <CustomRadio label="Role" name="role" value={role} handleChange={handleRole} options={['Customer', 'Seller', 'Transport Company']} />
 
                     <Button
                         width="w-full"

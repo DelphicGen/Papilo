@@ -23,9 +23,16 @@ app.post('/customer/register',async (req,res) => {
         })
     })
 
+    let payload = {
+        "role" : "customer",
+        "id" : customer.id
+    }
+    const token = jwt.sign(payload, process.env.SECRET_KEY)
+
     res.send({
         "role" : "customer",
-        status : 'ok'
+        status : 'ok',
+        token
     })
 })
 
@@ -71,9 +78,16 @@ app.post('/seller/register',async (req,res) => {
         })
     })
 
+    let payload = {
+        "role" : "seller",
+        "id" : seller.id
+    }
+    const token = jwt.sign(payload, process.env.SECRET_KEY)
+
     res.send({
         "role" : "seller",
-        status : 'ok'
+        status : 'ok',
+        token
     })
 })
 
@@ -119,9 +133,16 @@ app.post('/transport/register',async (req,res) => {
         })
     })
 
+    let payload = {
+        "role" : "transportCompany",
+        "id" : transportCompany.id
+    }
+    const token = jwt.sign(payload, process.env.SECRET_KEY)
+
     res.send({
         "role" : "transportCompany",
-        status : 'ok'
+        status : 'ok',
+        token
     })
 })
 
@@ -175,5 +196,62 @@ app.post('/product/add', verifyToken, async(req,res)=>{
     });
 })
 
+app.post('/product/get', async(req,res)=>{
+    const products = await model.product.findAll()
+
+    res.send({
+        status: "ok",
+        products,
+    });
+})
+
+app.post('/seller/product/get', verifyToken, async(req,res)=>{
+    const products = await model.product.findAll({ where: { sellerId: req.decode.id}})
+
+    if(req.decode.role != 'seller'){
+        res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+
+    res.send({
+        status: "ok",
+        products,
+    });
+})
+
+app.post('/product/edit', verifyToken, async(req,res)=>{
+    let body = req.body
+
+    if(req.decode.role != 'seller'){
+        res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+    console.log(body)
+    let product = await model.product.findOne({where: {id : body.id}})
+    // product.set(productname, body.productName)
+    product.productName = body.productName
+    product.type = body.type
+    product.stock = body.stock
+    product.price = body.price
+    product.save()
+    
+    res.send({
+        status : "ok"
+    })
+})
+
+app.post('/product/delete', verifyToken, async(req,res)=>{
+    await model.product.destroy({ where: { id: req.body.id}})
+    const products = await model.product.findAll({ where: { sellerId: req.decode.id}})
+
+    res.send({
+        status: "ok",
+        products,
+    });
+})
 
 app.listen(4000)

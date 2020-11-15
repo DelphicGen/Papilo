@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { removeRole, clearCart } from '../../actions/action'
 
-const Anchors = () => {
+const Anchors = props => {
+
+    const dispatch = useDispatch();
     const {role} = useSelector(state => state)
     const [anchors, setAnchors] = useState((
         <>
@@ -11,6 +14,12 @@ const Anchors = () => {
             <Link to="/register" >Register</Link>
         </>
     ))
+
+    const logout = useCallback(() => {
+        localStorage.removeItem('token')
+        dispatch(clearCart())
+        dispatch(removeRole())
+    }, [dispatch])
 
     useEffect(() => {
         if(!role) {
@@ -24,12 +33,19 @@ const Anchors = () => {
             setAnchors((
                 <>
                     <Link to="/cart">
-                        <ShoppingCartIcon fontSize="large" />
+                        <ShoppingCartIcon className="mr-5" fontSize="large" />
                     </Link>
+                    <button onClick={logout}>Logout</button>
+                </>
+            ))
+        } else if(role === 'seller') {
+            setAnchors((
+                <>
+                    <button onClick={logout}>Logout</button>
                 </>
             ))
         }
-    }, [role])
+    }, [logout, role])
 
     return (
         <>

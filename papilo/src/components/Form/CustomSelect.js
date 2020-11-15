@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { validate } from '../../util/validator'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -14,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const CustomeSelect = props => {
+const CustomSelect = props => {
 
     const classes = useStyles();
 
@@ -28,11 +27,11 @@ const CustomeSelect = props => {
                 onChange={props.handleChange}
             >
             {
-                props.items.map(item => <MenuItem value={item}>{item}</MenuItem>)
+                props.items.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)
             }
             </Select>
         </FormControl>
     )
 }
 
-export default CustomeSelect
+export default CustomSelect

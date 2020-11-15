@@ -10,25 +10,30 @@ import Button from '../../components/UI/Button';
 import Axios from 'axios';
 import { success, error } from '../../actions/action';
 
-const AddProduct = () => {
+const EditProduct = props => {
     const dispatch = useDispatch();
-    const [formState, inputHandler, resetHandler] = useForm({
+    const productName = localStorage.getItem('productName')
+    const stock = localStorage.getItem('stock')
+    const price = localStorage.getItem('price')
+    const prevType = localStorage.getItem('type')
+    const id = localStorage.getItem('id')
+
+    const [formState, inputHandler] = useForm({
         productName: {
-            value: '',
-            isValid: false
+            value: productName,
+            isValid: true
         },
         stock: {
-            value: null,
-            isValid: false
+            value: stock,
+            isValid: true
         },
         price: {
-            value: null,
-            isValid: false
+            value: price,
+            isValid: true
         }
-    }, false)
+    }, true)
 
-    const [type, setType] = useState('')
-    const [reset, setReset] = useState(false)
+    const [type, setType] = useState(prevType)
 
     const typeHandler = (event) => {
         setType(event.target.value)
@@ -36,7 +41,7 @@ const AddProduct = () => {
 
     const submitHandler = event => {
         event.preventDefault()
-        let url = 'http://localhost:4000/product/add'
+        let url = 'http://localhost:4000/product/edit'
 
         Axios({
             method: 'POST',
@@ -46,15 +51,16 @@ const AddProduct = () => {
                 type: type,
                 stock: formState.inputs.stock.value,
                 price: formState.inputs.price.value,
+                id: id
             },
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                if(response.data.status === 'created') {
-                    dispatch(success('Product Added!'))
-                    setReset(true)
-                    resetHandler()
-                } else dispatch(error('Fail to add product'))
+                // console.log(response)
+                if(response.data.status === 'ok') {
+                    dispatch(success('Product Edited!'))
+                    props.history.push('/', {forceRefresh:true})
+                } else dispatch(error('Fail to edit product'))
             })
     }
 
@@ -62,7 +68,7 @@ const AddProduct = () => {
         <Container>
             <div style={{minHeight: 'calc(100vh - 216px)'}} className="flex items-center justify-center">
                 <div className="w-fit-content">
-                    <Header heading="Add Product" />
+                    <Header heading="Edit Product" />
                     <Input
                         id="productName"
                         type="text"
@@ -71,11 +77,11 @@ const AddProduct = () => {
                         onInput={inputHandler}
                         errorText="Please enter your product's name."
                         width={300}
-                        reset={reset}
-                        setReset={setReset}
+                        value={formState.inputs.productName.value}
+                        valid={true}
                         required />
 
-                    <CustomSelect id="type" label="Product's Type" value={type} items={['Baju', 'Celana', 'Tas', 'Sepatu', 'Aksesoris']} handleChange={typeHandler} />
+                    <CustomSelect id="type" label="Product's Type" value={prevType} items={['Baju', 'Celana', 'Tas', 'Sepatu', 'Aksesoris']} handleChange={typeHandler} />
 
                     <Input
                         id="stock"
@@ -85,8 +91,8 @@ const AddProduct = () => {
                         onInput={inputHandler}
                         errorText="Please enter your product's stock."
                         width={300}
-                        reset={reset}
-                        setReset={setReset}
+                        value={formState.inputs.stock.value}
+                        valid={true}
                         required />
                     <Input
                         id="price"
@@ -96,8 +102,8 @@ const AddProduct = () => {
                         onInput={inputHandler}
                         errorText="Please enter your product's price."
                         width={300}
-                        reset={reset}
-                        setReset={setReset}
+                        value={formState.inputs.price.value}
+                        valid={true}
                         required />
 
                     <Button
@@ -106,7 +112,7 @@ const AddProduct = () => {
                         type="submit"
                         onClick={submitHandler}
                         disabled={!formState.isValid || !type}>
-                        ADD
+                        SAVE
                     </Button>
                 </div>
             </div>
@@ -114,4 +120,4 @@ const AddProduct = () => {
     )
 }
 
-export default AddProduct
+export default EditProduct
