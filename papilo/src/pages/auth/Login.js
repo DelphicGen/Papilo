@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { VALIDATOR_REQUIRE, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from '../util/validator'
-import Input from '../components/Form/Input'
-import Button from '../components/UI/Button'
-import { useForm } from '../hooks/form-hook'
-import Container from '../components/UI/Container'
+import { VALIDATOR_REQUIRE, VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from '../../util/validator'
+import Input from '../../components/Form/Input'
+import Button from '../../components/UI/Button'
+import { useForm } from '../../hooks/form-hook'
+import Container from '../../components/UI/Container'
 import { Link } from 'react-router-dom'
-import Header from '../components/UI/Header'
+import Header from '../../components/UI/Header'
 import Axios from 'axios'
 import { useDispatch } from 'react-redux';
-import { success, error, saveRole } from '../actions/action';
-import CustomRadio from '../components/Form/CustomRadio'
+import { success, error, saveRole } from '../../actions/action';
+import CustomRadio from '../../components/Form/CustomRadio'
 
 const Login = props => {
     const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const Login = props => {
                         label="Email*"
                         validators={[VALIDATOR_REQUIRE(), VALIDATOR_EMAIL()]}
                         onInput={inputHandler}
-                        errorText="Mohon masukkan email yang valid."
+                        errorText="Please enter a valid email address."
                         width={300}
                         required />
 
@@ -78,7 +78,7 @@ const Login = props => {
                         label="Password*"
                         validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(8)]}
                         onInput={inputHandler}
-                        errorText="Password minimal 8 karakter."
+                        errorText="Password should has at least 8 characters."
                         width={300}
                         className="mb-5"
                         required />

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import Container from '../components/UI/Container'
-import CustomTable from '../components/UI/CustomTable'
-import { clearCart } from '../actions/action'
+import Container from '../../components/UI/Container'
+import CustomTable from '../../components/UI/CustomTable'
+import { clearCart } from '../../actions/action'
 import { useSelector, useDispatch } from 'react-redux'
-import Button from '../components/UI/Button'
+import Button from '../../components/UI/Button'
 import { Link } from 'react-router-dom'
-import Header from '../components/UI/Header'
+import Header from '../../components/UI/Header'
 
 const Cart = () => {
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import Container from '../components/UI/Container'
-import Header from '../components/UI/Header'
-import CustomSelect from '../components/Form/CustomSelect'
-import { useForm } from '../hooks/form-hook'
-import Button from '../components/UI/Button'
+import Container from '../../components/UI/Container'
+import Header from '../../components/UI/Header'
+import CustomSelect from '../../components/Form/CustomSelect'
+import { useForm } from '../../hooks/form-hook'
+import Button from '../../components/UI/Button'
 
 const Checkout = () => {
     let totalPrice = localStorage.getItem('totalPrice')

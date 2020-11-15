@@ -20,6 +20,14 @@ const formReducer = (state, action) => {
                 },
                 isValid: formIsValid
             }
+        case 'RESET_INPUT':
+            for (const inputId in state.inputs) {
+                state.inputs[inputId] = null
+            }
+            return {
+                ...state,
+                isValid: false
+            }
         default:
             return state
     }
@@ -40,5 +48,11 @@ export const useForm = (initialInputs, initialFormValidity) => {
         })
     }, [])
 
-    return [formState, inputHandler]
+    const resetHandler = useCallback((id, value, isValid) => {
+        dispatch({
+            type: 'RESET_INPUT'
+        })
+    }, [])
+
+    return [formState, inputHandler, resetHandler]
 }

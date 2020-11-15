@@ -7,11 +7,14 @@ import Navbar from './components/UI/Navbar'
 import Flash from './components/UI/Flash'
 import { useSelector } from 'react-redux'
 
-const HomePage = React.lazy(() => import('./pages/HomePage'))
-const Login = React.lazy(() => import('./pages/Login'))
-const Register = React.lazy(() => import('./pages/Register'))
-const Cart = React.lazy(() => import('./pages/Cart'))
-const Checkout = React.lazy(() => import('./pages/Checkout'))
+const Login = React.lazy(() => import('./pages/auth/Login'))
+const Register = React.lazy(() => import('./pages/auth/Register'))
+
+const HomePage = React.lazy(() => import('./pages/customer/HomePage'))
+const Cart = React.lazy(() => import('./pages/customer/Cart'))
+const Checkout = React.lazy(() => import('./pages/customer/Checkout'))
+
+const AddProduct = React.lazy(() => import('./pages/seller/AddProduct'))
 
 const App = () => {
 
@@ -43,6 +46,12 @@ const App = () => {
                     <Route path="/cart" component={Cart} exact />
                     <Route path="/checkout" component={Checkout} exact />
                     <Redirect to="/" />
+                </Switch>
+            ))
+        } else if(role === 'seller') {
+            setRoutes((
+                <Switch>
+                    <Route path="/" component={AddProduct} exact />
                 </Switch>
             ))
         }

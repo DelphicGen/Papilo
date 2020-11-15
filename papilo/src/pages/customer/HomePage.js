@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Product from '../components/UI/Product'
-import Item from '../assets/products/item.png'
-import LoadingSpinner from '../components/UI/LoadingSpinner'
-import Container from '../components/UI/Container'
-import { addToCart } from '../actions/action'
+import Product from '../../components/UI/Product'
+import Item from '../../assets/products/item.png'
+import LoadingSpinner from '../../components/UI/LoadingSpinner'
+import Container from '../../components/UI/Container'
+import { addToCart } from '../../actions/action'
 import { useDispatch } from 'react-redux'
-import Hero from '../assets/hero.png'
+import Hero from '../../assets/hero.png'
 
 const HomePage = () => {
     const dispatch = useDispatch();

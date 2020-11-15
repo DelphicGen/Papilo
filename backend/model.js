@@ -84,9 +84,9 @@ const product = sequelize.define('product',{
 seller.hasMany(product);
 product.belongsTo(seller);
 
-// sequelize.sync({force : false, alter: true})
+sequelize.sync({force : false, alter: true})
 
-sequelize.sync({force : true})
+// sequelize.sync({force : true})
 
 module.exports = {
   customer: customer,
