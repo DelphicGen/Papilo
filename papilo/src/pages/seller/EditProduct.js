@@ -56,7 +56,6 @@ const EditProduct = props => {
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                // console.log(response)
                 if(response.data.status === 'ok') {
                     dispatch(success('Product Edited!'))
                     props.history.push('/', {forceRefresh:true})

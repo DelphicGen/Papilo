@@ -46,6 +46,7 @@ const Login = props => {
                 if(response.data.status === 'ok') {
                     dispatch(success('Login successful'))
                     localStorage.setItem('token', response.data.token)
+                    // localStorage.setItem('papilopay', response.data.papilopay)
                     dispatch(saveRole(response.data.role))
                     props.history.push('/')
                 } else dispatch(error('Wrong credentials'))

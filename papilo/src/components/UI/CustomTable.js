@@ -9,9 +9,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Item from '../../assets/products/item.png'
 import Button from './Button';
 import { Link } from 'react-router-dom';
+import Shirt from '../../assets/products/shirt.jpg'
+import Pants from '../../assets/products/pants.jpg'
+import Shoes from '../../assets/products/shoes.png'
+import Bag from '../../assets/products/bag.jpg'
+import Accessory from '../../assets/products/accessory.jpg'
 
 const useStyles = makeStyles({
     table: {
@@ -47,7 +51,7 @@ const CustomTable = props => {
               role === 'customer' &&
               props.rows.map((row, index) => {
                 return <TableRow style={{borderBottom: '2px solid #C70C19'}} key={index}>
-                    <TableCell><img style={{width: 'auto', height: '150px'}} className="object-cover object-center" src={Item} alt={row.productName} /></TableCell>
+                    <TableCell><img style={{width: 'auto', height: '150px'}} className="object-cover object-center" src={row.type === 'Baju' ? Shirt : (row.type === 'Celana' ? Pants : (row.type === 'Tas' ? Bag : (row.type === 'Sepatu' ? Shoes : Accessory)))} alt={row.productName} /></TableCell>
                     <TableCell>{row.productName}</TableCell>
                     <TableCell>Rp. {row.price}</TableCell>
                     <TableCell>

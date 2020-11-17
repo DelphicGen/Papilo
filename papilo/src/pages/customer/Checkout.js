@@ -1,32 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from '../../components/UI/Container'
 import Header from '../../components/UI/Header'
 import CustomSelect from '../../components/Form/CustomSelect'
-import { useForm } from '../../hooks/form-hook'
 import Button from '../../components/UI/Button'
+import Axios from 'axios'
+import { useDispatch } from 'react-redux';
+import { success, error } from '../../actions/action';
+import { clearCart } from '../../actions/action'
 
-const Checkout = () => {
+const Checkout = props => {
+    const dispatch = useDispatch();
     let totalPrice = localStorage.getItem('totalPrice')
-    const [transhipment, setTranshipment] = useState('JNE')
-    const [payment, setPayment] = useState('COD')
-
-    // const [formState, inputHandler] = useForm({
-    //     transhipment: {
-    //         value: '',
-    //         isValid: false
-    //     },
-    //     payment: {
-    //         value: '',
-    //         isValid: false
-    //     },
-    // }, false)
+    let [papilopay, setPapilopay] = useState();
+    const [transhipment, setTranshipment] = useState('Kargo Yes')
+    const [payment, setPayment] = useState('PapiloPay')
 
     const submitHandler = event => {
         event.preventDefault()
-        // const requestBody = JSON.stringify({
-        //     email: formState.inputs.email.value,
-        //     password: formState.inputs.password.value
-        // })
+        Axios({
+            method: 'POST',
+            url: 'http://localhost:4000/papilopay/pay',
+            data: {
+                totalPrice: totalPrice,
+            },
+            headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
+        })
+            .then(response => {
+                if(response.data.status === 'ok') {
+                    dispatch(clearCart())
+                    dispatch(success('Order will be processed!'))
+                    props.history.push('/')
+                } else dispatch(error('Something went wrong'))
+            })
     }
 
     const transhipmentHandler = (event) => {
@@ -37,15 +42,31 @@ const Checkout = () => {
         setPayment(event.target.value)
     }
 
+    useEffect(() => {
+        
+        Axios({
+            method: 'POST',
+            url: 'http://localhost:4000/papilopay/get',
+            headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
+        })
+            .then(response => {
+                if(response.data.status === 'ok') {
+                    setPapilopay(response.data.papilopay[0].amount)
+                }
+            })
+
+    }, [])
+
     return (
         <Container>
             <div style={{minHeight: 'calc(100vh - 216px)'}}>
                 <Header heading="Checkout" className="text-right" />
 
                 <h3 className="font-bold text-lg md:text-xl">Total: Rp. {totalPrice}</h3>
+                <h3 className="font-bold text-lg md:text-xl">Papilopay: Rp. {papilopay}</h3>
 
-                <CustomSelect id="transhipment" label="Transhipment Method" value={transhipment} items={['JNE']} handleChange={transhipmentHandler} />
-                <CustomSelect id="payment" label="Payment Method" value={payment} items={['COD', 'PapiloPay']} handleChange={paymentHandler} />
+                <CustomSelect id="transhipment" label="Transhipment Method" value={transhipment} items={['Kargo Yes', 'Si Kilat', 'Yuveo', 'Roomm', 'Agivu']} handleChange={transhipmentHandler} />
+                <CustomSelect id="payment" label="Payment Method" value={payment} items={['PapiloPay']} handleChange={paymentHandler} />
 
                 <Button
                     width="w-full"

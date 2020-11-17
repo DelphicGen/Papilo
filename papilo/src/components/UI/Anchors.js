@@ -44,6 +44,12 @@ const Anchors = props => {
                     <button onClick={logout}>Logout</button>
                 </>
             ))
+        } else if(role === 'transportCompany') {
+            setAnchors((
+                <>
+                    <button onClick={logout}>Logout</button>
+                </>
+            ))
         }
     }, [logout, role])
 

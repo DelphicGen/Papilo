@@ -81,8 +81,108 @@ const product = sequelize.define('product',{
     },
   })
 
+// PapiloPay
+const topup = sequelize.define('topup',{
+  id : {
+    type : DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement : true
+  },
+  tanggal : {
+    type : DataTypes.DATE,
+  },
+  jumlah : {
+    type : DataTypes.DOUBLE
+  }
+})
+
+const papilopay = sequelize.define('papilopay',{
+  id : {
+    type : DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement : true
+  },
+  amount : {
+    type : DataTypes.DOUBLE,
+  }
+})
+
+// Order
+const order = sequelize.define('order',{
+  id : {
+    type : DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement : true
+  },
+  total_harga :{
+      type : DataTypes.DOUBLE
+  },
+  status :{
+      type : DataTypes.STRING
+  },
+  payment_date :{
+    type : DataTypes.DATE
+  }
+})
+
+const orderDetails = sequelize.define('orderDetails',{
+  id : {
+    type : DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement : true
+  },
+  jumlah :{
+      type : DataTypes.INTEGER
+  },
+  harga :{
+      type : DataTypes.DOUBLE
+  }
+})
+
+// Shipping
+const shippingDetails = sequelize.define('shippingDetails',{
+  id : {
+    type : DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement : true
+  },
+  alamat_sender :{
+      type : DataTypes.STRING
+  },
+  alamat_receiver :{
+      type : DataTypes.STRING
+  },
+  shipping_type : {
+      type : DataTypes.STRING
+  },
+  fee : {
+      type: DataTypes.DOUBLE
+  }
+})
+
 seller.hasMany(product);
 product.belongsTo(seller);
+
+customer.hasMany(topup);
+topup.belongsTo(customer);
+
+customer.hasOne(papilopay);
+papilopay.belongsTo(customer);
+
+order.hasMany(orderDetails);
+orderDetails.belongsTo(order);
+
+order.hasOne(shippingDetails);
+shippingDetails.belongsTo(order);
+
+customer.hasMany(order);
+order.belongsTo(customer);
+
+seller.hasMany(order);
+order.belongsTo(seller);
+
+transportCompany.hasMany(shippingDetails);
+shippingDetails.belongsTo(transportCompany);
 
 sequelize.sync({force : false, alter: true})
 
@@ -92,5 +192,10 @@ module.exports = {
   customer: customer,
   seller: seller,
   transportCompany: transportCompany,
-  product: product
+  product: product,
+  order: order,
+  orderDetails: orderDetails,
+  shippingDetails: shippingDetails,
+  topup: topup,
+  papilopay: papilopay
 }

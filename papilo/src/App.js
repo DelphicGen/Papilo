@@ -58,6 +58,12 @@ const App = () => {
                     <Route path="/edit" component={EditProduct} exact />
                 </Switch>
             ))
+        } else if(role === 'transportCompany') {
+            setRoutes((
+                <Switch>
+                    <Route path="/" component={HomePage} exact />
+                </Switch>
+            ))
         }
         
     }, [role])

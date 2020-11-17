@@ -31,7 +31,7 @@ const Flash = () => {
         <AnimatePresence exitBeforeEnter>
             {
                 message && (
-                    <motion.div className={`z-20 fixed top-0 right-0 text-white shadow-md py-2 px-4 mt-2 mx-2 text-lg font-bold ${type === 'Success' ? 'bg-green-600' : 'bg-red-600'}`}
+                    <motion.div className={`z-20 fixed bottom-0 left-0 text-white shadow-md py-2 px-4 mt-2 mx-2 text-lg font-bold ${type === 'Success' ? 'bg-green-600' : 'bg-red-600'}`}
                         variants={ flash }
                         initial="hidden"
                         animate="visible"

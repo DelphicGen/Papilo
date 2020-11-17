@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { useSelector } from 'react-redux'
-import Item from '../../assets/products/item.png'
 
 const Product = props => {
 
@@ -18,12 +17,12 @@ const Product = props => {
     }, [cart, props.id])
 
     return (
-        <div>
+        <div className="overflow-hidden border-2 border-red-700 rounded-lg shadow-lg">
             <div className="relative">
-                <img style={{width: '100%', height: '250px'}} className="object-cover object-center" src={Item} alt={props.name} />
+                <img style={{width: '100%', height: '250px'}} className="object-cover object-center" src={props.image} alt={props.name} />
                 {
                     role === 'customer' && (
-                        <button className="absolute right-0 bottom-0 cursor-pointer rounded-tl-lg text-white bg-gray-800 p-2" onClick={props.onCartButtonClicked}>
+                        <button className="absolute right-0 bottom-0 cursor-pointer rounded-tl-lg text-white bg-red-700 p-2 focus:outline-none" onClick={props.onCartButtonClicked}>
                             {
                                 inCart ? 'In Cart' :
                                 <ShoppingCartIcon />
@@ -33,8 +32,10 @@ const Product = props => {
                 }
             </div>
 
-            <h3 className="font-bold text-lg">{props.name}</h3>
-            <h4 className="text-red-700">Rp. {props.price}</h4>
+            <div className="py-1 px-2 border-t-2 border-red-700 flex items-center justify-between flex-wrap bg-red-700 text-white">
+                <h3 className="font-bold text-lg">{props.name}</h3>
+                <h4>Rp. {props.price}</h4>
+            </div>
         </div>
     )
 }

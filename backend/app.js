@@ -49,6 +49,10 @@ app.post('/customer/login',async(req,res)=>{
         })
     }
 
+    // const papilopay = await model.papilopay.findAll({
+    //     where: {customerId: customer.id}
+    // })
+
     let payload = {
         "role" : "customer",
         "id" : customer.id
@@ -58,6 +62,7 @@ app.post('/customer/login',async(req,res)=>{
     return res.send({
         "status": "ok",
         "role" : "customer",
+        // "papilopay": papilopay,
         token
     })
 
@@ -230,9 +235,8 @@ app.post('/product/edit', verifyToken, async(req,res)=>{
             "msg" : "role is incorrect"
         })
     }
-    console.log(body)
+
     let product = await model.product.findOne({where: {id : body.id}})
-    // product.set(productname, body.productName)
     product.productName = body.productName
     product.type = body.type
     product.stock = body.stock
@@ -252,6 +256,28 @@ app.post('/product/delete', verifyToken, async(req,res)=>{
         status: "ok",
         products,
     });
+})
+
+// Papilopay
+app.post('/papilopay/get', verifyToken, async(req,res)=>{
+    const papilopay = await model.papilopay.findAll({
+        where: {customerId: req.decode.id}
+    })
+
+    res.send({
+        status: "ok",
+        papilopay,
+    });
+})
+
+app.post('/papilopay/pay', verifyToken, async(req,res)=>{
+    let papilopay = await model.papilopay.findOne({where: {customerId : req.decode.id}})
+    papilopay.amount -= req.body.totalPrice
+    papilopay.save()
+    
+    res.send({
+        status : "ok"
+    })
 })
 
 app.listen(4000)
