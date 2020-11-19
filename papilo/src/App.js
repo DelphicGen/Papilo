@@ -14,6 +14,7 @@ const HomePage = React.lazy(() => import('./pages/customer/HomePage'))
 const Cart = React.lazy(() => import('./pages/customer/Cart'))
 const Checkout = React.lazy(() => import('./pages/customer/Checkout'))
 
+const Orders = React.lazy(() => import('./pages/seller/Orders'))
 const ProductList = React.lazy(() => import('./pages/seller/ProductList'))
 const AddProduct = React.lazy(() => import('./pages/seller/AddProduct'))
 const EditProduct = React.lazy(() => import('./pages/seller/EditProduct'))
@@ -53,7 +54,8 @@ const App = () => {
         } else if(role === 'seller') {
             setRoutes((
                 <Switch>
-                    <Route path="/" component={ProductList} exact />
+                    <Route path="/" component={Orders} exact />
+                    <Route path="/list" component={ProductList} exact />
                     <Route path="/add" component={AddProduct} exact />
                     <Route path="/edit" component={EditProduct} exact />
                 </Switch>

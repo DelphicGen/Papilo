@@ -13,7 +13,7 @@ const ProductList = () => {
     useEffect(() => {
         Axios({
             method: 'POST',
-            url: 'http://localhost:4000/seller/product/get',
+            url: 'http://localhost:4000/product/seller/get',
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {

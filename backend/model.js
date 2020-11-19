@@ -172,6 +172,9 @@ papilopay.belongsTo(customer);
 order.hasMany(orderDetails);
 orderDetails.belongsTo(order);
 
+product.hasMany(orderDetails);
+orderDetails.belongsTo(product);
+
 order.hasOne(shippingDetails);
 shippingDetails.belongsTo(order);
 

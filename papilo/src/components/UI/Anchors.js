@@ -41,6 +41,7 @@ const Anchors = props => {
         } else if(role === 'seller') {
             setAnchors((
                 <>
+                    <Link className="mr-5" to="/list">Your Products</Link>
                     <button onClick={logout}>Logout</button>
                 </>
             ))

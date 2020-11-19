@@ -4,17 +4,18 @@ import Header from '../../components/UI/Header'
 import CustomSelect from '../../components/Form/CustomSelect'
 import Button from '../../components/UI/Button'
 import Axios from 'axios'
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { success, error } from '../../actions/action';
 import { clearCart } from '../../actions/action'
 
 const Checkout = props => {
     const dispatch = useDispatch();
+    const {cart} = useSelector(state => state)
+    // console.log(cart)
     let totalPrice = localStorage.getItem('totalPrice')
     let [papilopay, setPapilopay] = useState();
     const [transhipment, setTranshipment] = useState('Kargo Yes')
     const [payment, setPayment] = useState('PapiloPay')
-
     const submitHandler = event => {
         event.preventDefault()
         Axios({
@@ -22,6 +23,7 @@ const Checkout = props => {
             url: 'http://localhost:4000/papilopay/pay',
             data: {
                 totalPrice: totalPrice,
+                cart: cart
             },
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
@@ -62,8 +64,8 @@ const Checkout = props => {
             <div style={{minHeight: 'calc(100vh - 216px)'}}>
                 <Header heading="Checkout" className="text-right" />
 
-                <h3 className="font-bold text-lg md:text-xl">Total: Rp. {totalPrice}</h3>
-                <h3 className="font-bold text-lg md:text-xl">Papilopay: Rp. {papilopay}</h3>
+                <h3 className="font-bold text-lg md:text-xl mb-3">Papilopay: Rp. {papilopay}</h3>
+                <h3 className="font-bold text-lg md:text-xl mb-5">Total: Rp. {totalPrice}</h3>
 
                 <CustomSelect id="transhipment" label="Transhipment Method" value={transhipment} items={['Kargo Yes', 'Si Kilat', 'Yuveo', 'Roomm', 'Agivu']} handleChange={transhipmentHandler} />
                 <CustomSelect id="payment" label="Payment Method" value={payment} items={['PapiloPay']} handleChange={paymentHandler} />

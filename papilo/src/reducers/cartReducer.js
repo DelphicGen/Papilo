@@ -17,7 +17,8 @@ export default function(state = initialState, action) {
                     count: 1,
                     maxCount: action.payload.product.stock,
                     total: action.payload.product.price,
-                    type: action.payload.product.type
+                    type: action.payload.product.type,
+                    sellerId: action.payload.product.sellerId
                 }
             ]
         case actions.CLEAR_CART:

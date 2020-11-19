@@ -210,7 +210,7 @@ app.post('/product/get', async(req,res)=>{
     });
 })
 
-app.post('/seller/product/get', verifyToken, async(req,res)=>{
+app.post('/product/seller/get', verifyToken, async(req,res)=>{
     const products = await model.product.findAll({ where: { sellerId: req.decode.id}})
 
     if(req.decode.role != 'seller'){
@@ -271,13 +271,77 @@ app.post('/papilopay/get', verifyToken, async(req,res)=>{
 })
 
 app.post('/papilopay/pay', verifyToken, async(req,res)=>{
-    let papilopay = await model.papilopay.findOne({where: {customerId : req.decode.id}})
-    papilopay.amount -= req.body.totalPrice
-    papilopay.save()
+    let body = req.body
+    // let sellerId = []
+    // let totalHarga = []
+    let orders = {}
+    // let papilopay = await model.papilopay.findOne({where: {customerId : req.decode.id}})
+    // papilopay.amount -= body.totalPrice
+    // papilopay.save()
+
+
+    await body.cart.forEach(async item => {
+        // sellerId.push(item.sellerId)
+        // totalHarga.push(item.price * item.count)
+        if(!(item.sellerId in orders)) {
+            orders[item.sellerId] = {price: [item.total], count: [item.count]}
+            // orders[item.sellerId][price] = [item.total]
+            // orders[item.sellerId][count] = [item.count]
+        } else {
+            orders[item.sellerId].price.push(item.total)
+            orders[item.sellerId].count.push(item.count)
+        }
+
+        const product = await model.product.findOne({ where: { id: item.id}})
+        // product.stock -= item.count
+        product.save()
+
+    })
+
+    
+    let date = new Date();
+    date = date.getUTCFullYear() + '-' +
+        ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
+        ('00' + date.getUTCDate()).slice(-2) + ' ' + 
+        ('00' + date.getUTCHours()).slice(-2) + ':' + 
+        ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
+        ('00' + date.getUTCSeconds()).slice(-2);
+    
+    for(const key in orders) {
+
+        const order = await model.order.create({
+            total_harga: orders[key].price.reduce((a, b) => (a + b), 0),
+            status: "paid",
+            customerId: req.decode.id,
+            payment_date: date,
+            sellerId: key
+        });
+
+        orders[key].price.forEach(async (val, index) => {
+            const orderDetails = await model.orderDetails.create({
+                jumlah: orders[key].count[index],
+                harga: val,
+                orderId: order.id
+            })
+        })
+
+    }
     
     res.send({
         status : "ok"
     })
+})
+
+// Order
+app.post('/order/get', verifyToken, async(req,res)=>{
+    const orders = await model.order.findAll({
+        where: {sellerId: req.decode.id}
+    })
+
+    res.send({
+        status: "ok",
+        orders,
+    });
 })
 
 app.listen(4000)
