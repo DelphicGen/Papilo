@@ -7,15 +7,26 @@ import Axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux';
 import { success, error } from '../../actions/action';
 import { clearCart } from '../../actions/action'
+import { VALIDATOR_REQUIRE } from '../../util/validator'
+import Input from '../../components/Form/Input'
+import { useForm } from '../../hooks/form-hook'
 
 const Checkout = props => {
+
+    const [formState, inputHandler] = useForm({
+        address: {
+            value: '',
+            isValid: false
+        },
+    }, false)
+
     const dispatch = useDispatch();
     const {cart} = useSelector(state => state)
-    // console.log(cart)
     let totalPrice = localStorage.getItem('totalPrice')
     let [papilopay, setPapilopay] = useState();
-    const [transhipment, setTranshipment] = useState('Kargo Yes')
+    const [transshipment, setTransshipment] = useState('Kargo Yes')
     const [payment, setPayment] = useState('PapiloPay')
+
     const submitHandler = event => {
         event.preventDefault()
         Axios({
@@ -23,7 +34,9 @@ const Checkout = props => {
             url: 'http://localhost:4000/papilopay/pay',
             data: {
                 totalPrice: totalPrice,
-                cart: cart
+                cart: cart,
+                address: formState.inputs.address.value,
+                transshipment: transshipment
             },
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
@@ -37,7 +50,7 @@ const Checkout = props => {
     }
 
     const transhipmentHandler = (event) => {
-        setTranshipment(event.target.value)
+        setTransshipment(event.target.value)
     }
 
     const paymentHandler = (event) => {
@@ -67,19 +80,33 @@ const Checkout = props => {
                 <h3 className="font-bold text-lg md:text-xl mb-3">Papilopay: Rp. {papilopay}</h3>
                 <h3 className="font-bold text-lg md:text-xl mb-5">Total: Rp. {totalPrice}</h3>
 
-                <CustomSelect id="transhipment" label="Transhipment Method" value={transhipment} items={['Kargo Yes', 'Si Kilat', 'Yuveo', 'Roomm', 'Agivu']} handleChange={transhipmentHandler} />
+                <CustomSelect id="transshipment" label="Transhipment Method" value={transshipment} items={['Kargo Yes', 'Si Kilat', 'Yuveo', 'Roomm', 'Agivu']} handleChange={transhipmentHandler} />
                 <CustomSelect id="payment" label="Payment Method" value={payment} items={['PapiloPay']} handleChange={paymentHandler} />
+
+                <Input
+                    id="address"
+                    type="text"
+                    label="Receiver Address*"
+                    validators={[VALIDATOR_REQUIRE()]}
+                    onInput={inputHandler}
+                    errorText="Please enter the receiver's address"
+                    width={300}
+                    className="mb-5"
+                    required />
 
                 <Button
                     width="w-full"
                     className="mt-10 py-2"
                     type="submit"
-                    onClick={submitHandler}>
+                    onClick={submitHandler}
+                    disabled={!formState.isValid}
+                >
                     Pay
                 </Button>
             </div>
         </Container>
     )
 }
+
 
 export default Checkout

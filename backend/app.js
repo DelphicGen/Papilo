@@ -175,7 +175,6 @@ app.post('/transport/login',async(req,res)=>{
         "role" : "transportCompany",
         token
     })
-
 })
 
 // Product
@@ -272,28 +271,23 @@ app.post('/papilopay/get', verifyToken, async(req,res)=>{
 
 app.post('/papilopay/pay', verifyToken, async(req,res)=>{
     let body = req.body
-    // let sellerId = []
-    // let totalHarga = []
     let orders = {}
-    // let papilopay = await model.papilopay.findOne({where: {customerId : req.decode.id}})
-    // papilopay.amount -= body.totalPrice
-    // papilopay.save()
+    let papilopay = await model.papilopay.findOne({where: {customerId : req.decode.id}})
+    papilopay.amount -= body.totalPrice
+    papilopay.save()
 
 
     await body.cart.forEach(async item => {
-        // sellerId.push(item.sellerId)
-        // totalHarga.push(item.price * item.count)
         if(!(item.sellerId in orders)) {
-            orders[item.sellerId] = {price: [item.total], count: [item.count]}
-            // orders[item.sellerId][price] = [item.total]
-            // orders[item.sellerId][count] = [item.count]
+            orders[item.sellerId] = {price: [item.total], count: [item.count], productId: [item.id]}
         } else {
             orders[item.sellerId].price.push(item.total)
             orders[item.sellerId].count.push(item.count)
+            orders[item.sellerId].productId.push(item.id)
         }
 
         const product = await model.product.findOne({ where: { id: item.id}})
-        // product.stock -= item.count
+        product.stock -= item.count
         product.save()
 
     })
@@ -306,7 +300,7 @@ app.post('/papilopay/pay', verifyToken, async(req,res)=>{
         ('00' + date.getUTCHours()).slice(-2) + ':' + 
         ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
         ('00' + date.getUTCSeconds()).slice(-2);
-    
+        
     for(const key in orders) {
 
         const order = await model.order.create({
@@ -317,11 +311,24 @@ app.post('/papilopay/pay', verifyToken, async(req,res)=>{
             sellerId: key
         });
 
+        const transportCompany = await model.transportCompany.findOne({
+            where: {companyName: body.transshipment}
+        })
+
+        const shippingDetails = await model.shippingDetails.create({
+            alamat_receiver: body.address,
+            shipping_type: 'Air Service',
+            fee: 0,
+            orderId: order.id,
+            transportCompanyId: transportCompany.id
+        })
+
         orders[key].price.forEach(async (val, index) => {
             const orderDetails = await model.orderDetails.create({
                 jumlah: orders[key].count[index],
                 harga: val,
-                orderId: order.id
+                orderId: order.id,
+                productId: orders[key].productId[index]
             })
         })
 
@@ -338,9 +345,38 @@ app.post('/order/get', verifyToken, async(req,res)=>{
         where: {sellerId: req.decode.id}
     })
 
+    const orderDetails = []
+
+    for(const order of orders) {
+        const temp = await model.orderDetails.findAll({
+            where: {orderId: order.id}
+        })
+
+        for(const tempVal of temp) {
+            const temp2 = await model.product.findOne({
+                where: {id: tempVal.productId}
+            })
+            tempVal.dataValues.productName = temp2.productName
+            orderDetails.push(tempVal)
+        }
+
+    }
+
     res.send({
         status: "ok",
-        orders,
+        orderDetails
+    });
+})
+
+// shipping
+app.post('/shipping/get', verifyToken, async(req,res)=>{
+    const transshipment = await model.shippingDetails.findAll({
+        where: {transportCompanyId: req.decode.id}
+    })
+
+    res.send({
+        status: "ok",
+        transshipment
     });
 })
 

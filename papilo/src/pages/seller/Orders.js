@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import Container from '../../components/UI/Container';
 import Header from '../../components/UI/Header';
+import CustomTable from '../../components/UI/CustomTable'
 
 const Orders = () => {
-    const columns = []
+    const columns = ['Product', 'Quantity', 'Order Date']
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
@@ -14,8 +15,9 @@ const Orders = () => {
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                console.log(response.data.orders)
-                setOrders(response.data.orders)
+                // console.log(response.data.orderDetails)
+                console.log(response)
+                setOrders(response.data.orderDetails)
             })
     }, [])
 
@@ -23,7 +25,9 @@ const Orders = () => {
         <Container>
             <div style={{minHeight: 'calc(100vh - 216px)'}}>
                 <Header heading="Your Order" className="text-right" />
-                {/* <CustomTable deleteProduct={deleteProduct} columns={columns} rows={products} /> */}
+                {
+                    orders.length > 0 && <CustomTable orderList={true} columns={columns} rows={orders}  />
+                }
             </div>
         </Container>
     )

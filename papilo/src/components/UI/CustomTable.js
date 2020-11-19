@@ -65,32 +65,42 @@ const CustomTable = props => {
               })
             }
             {
-              role === 'seller' &&
+              props.orderList ? (
               props.rows.map((row, index) => {
                 return <TableRow style={{borderBottom: '2px solid #C70C19'}} key={index}>
                     <TableCell>{row.productName}</TableCell>
-                    <TableCell>{row.type}</TableCell>
-                    <TableCell>{row.stock}</TableCell>
-                    <TableCell>{row.price}</TableCell>
-                    <TableCell>
-                      <Link to="/edit">
-                        <Button className="py-2 px-5" secondary={true} 
-                          onClick={() => {
-                            localStorage.setItem('productName', row.productName)
-                            localStorage.setItem('type', row.type)
-                            localStorage.setItem('stock', row.stock)
-                            localStorage.setItem('price', row.price)
-                            localStorage.setItem('id', row.id)
-                          }
-                        }>Edit</Button>
-                      </Link>
-                    </TableCell>
-                    <TableCell>
-                      <Button className="py-2 px-5" onClick={() => props.deleteProduct(row.id)}>Delete</Button>
-                    </TableCell>
+                    <TableCell>{row.jumlah}</TableCell>
+                    <TableCell>{row.createdAt}</TableCell>
                 </TableRow>
-              })
+              })) : (
+                role === 'seller' && 
+                  props.rows.map((row, index) => {
+                    return <TableRow style={{borderBottom: '2px solid #C70C19'}} key={index}>
+                        <TableCell>{row.productName}</TableCell>
+                        <TableCell>{row.type}</TableCell>
+                        <TableCell>{row.stock}</TableCell>
+                        <TableCell>{row.price}</TableCell>
+                        <TableCell>
+                          <Link to="/edit">
+                            <Button className="py-2 px-5" secondary={true} 
+                              onClick={() => {
+                                localStorage.setItem('productName', row.productName)
+                                localStorage.setItem('type', row.type)
+                                localStorage.setItem('stock', row.stock)
+                                localStorage.setItem('price', row.price)
+                                localStorage.setItem('id', row.id)
+                              }
+                            }>Edit</Button>
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Button className="py-2 px-5" onClick={() => props.deleteProduct(row.id)}>Delete</Button>
+                        </TableCell>
+                    </TableRow>
+                  })
+              )
             }
+            
           </TableBody>
         </Table>
       </TableContainer>

@@ -19,6 +19,8 @@ const ProductList = React.lazy(() => import('./pages/seller/ProductList'))
 const AddProduct = React.lazy(() => import('./pages/seller/AddProduct'))
 const EditProduct = React.lazy(() => import('./pages/seller/EditProduct'))
 
+const Transshipment = React.lazy(() => import('./pages/transport/Transshipment'))
+
 const App = () => {
 
     const {role} = useSelector(state => state)
@@ -63,7 +65,7 @@ const App = () => {
         } else if(role === 'transportCompany') {
             setRoutes((
                 <Switch>
-                    <Route path="/" component={HomePage} exact />
+                    <Route path="/" component={Transshipment} exact />
                 </Switch>
             ))
         }
