@@ -4,6 +4,7 @@ const model = require('./model.js')
 const crypto = require('crypto')
 var jwt = require("jsonwebtoken");
 const verifyToken = require('./verify.js');
+const { Op } = require('sequelize')
 
 let app = express()
 app.use(express.json())
@@ -255,6 +256,28 @@ app.post('/product/delete', verifyToken, async(req,res)=>{
         status: "ok",
         products,
     });
+})
+
+app.post('/product/search', async (req, res) => {
+    // if (req.decode.role != 'customer') {
+    //     return res.send({
+    //         "status": "failed",
+    //         "msg": "role is incorrect"
+    //     })
+    // }
+
+    let body = req.body
+    let products = await model.product.findAll({
+        where: {
+            productName: {
+                [Op.like]: `%${body.query}%`
+            }
+        }
+    })
+    return res.send({
+        "status": "ok",
+        products: products
+    })
 })
 
 // Papilopay

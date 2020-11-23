@@ -10,3 +10,8 @@ export const ALERT_ERROR = 'ALERT_ERROR';
 
 export const SAVE_ROLE = 'SAVE_ROLE';
 export const REMOVE_ROLE = 'REMOVE_ROLE';
+
+
+export const SET_QUERY = 'SET_QUERY';
+export const SEARCH = 'SEARCH';
+export const RESET_SEARCH = 'RESET_SEARCH';

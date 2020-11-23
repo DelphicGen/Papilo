@@ -61,3 +61,21 @@ export const removeRole = () => ({
     type: actions.REMOVE_ROLE,
     payload: {}
 })
+
+// Query
+export const setQuery = (query) => ({
+    type: actions.SET_QUERY,
+    payload: {
+        query
+    }
+})
+
+export const search = () => ({
+    type: actions.SEARCH,
+    payload: {}
+})
+
+export const resetSearch = () => ({
+    type: actions.RESET_SEARCH,
+    payload: {}
+})

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Product from '../../components/UI/Product'
 import LoadingSpinner from '../../components/UI/LoadingSpinner'
 import Container from '../../components/UI/Container'
-import { addToCart } from '../../actions/action'
-import { useDispatch } from 'react-redux'
+import { addToCart, resetSearch } from '../../actions/action'
+import { useDispatch, useSelector } from 'react-redux'
 import Hero from '../../assets/hero.png'
 import Axios from 'axios'
 import Shirt from '../../assets/products/shirt.jpg'
@@ -43,7 +43,8 @@ const heroText = {
 
 const HomePage = () => {
     const dispatch = useDispatch();
-
+    
+    const {query} = useSelector(state => state)
     const [products, setProducts] = useState([])
 
     useEffect(() => {
@@ -56,6 +57,28 @@ const HomePage = () => {
                 setProducts(response.data.products)
             })
     }, [])
+    
+    useEffect(() => {
+        if(query.search){
+            let url
+            if(query.query.length === 0) url = 'http://localhost:4000/product/get'
+            else url = 'http://localhost:4000/product/search'
+
+            Axios({
+                method: 'POST',
+                url: url,
+                data: {
+                    query: query.query
+                }
+            })
+                .then(response => {
+                    console.log(response)
+                    setProducts(response.data.products)
+                    dispatch(resetSearch())
+                })
+        }
+        
+    }, [dispatch, query, query.search])
 
     return (
         <Container>
