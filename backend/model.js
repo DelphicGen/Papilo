@@ -187,6 +187,9 @@ const shippingDetails = sequelize.define('shippingDetails',{
   },
   fee : {
       type: DataTypes.DOUBLE
+  },
+  status : {
+    type : DataTypes.STRING
   }
 })
 

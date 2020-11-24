@@ -100,7 +100,25 @@ const CustomTable = props => {
                   })
               )
             }
-            
+            {
+              role === 'transportCompany' &&
+              props.rows.map((row, index) => {
+                console.log(row)
+                return <TableRow style={{borderBottom: '2px solid #C70C19'}} key={index}>
+                  <TableCell>{row.alamat_receiver}</TableCell>
+                  <TableCell>{row.shipping_type}</TableCell>
+                  <TableCell>Rp. {row.fee}</TableCell>
+                  <TableCell>{row.createdAt}</TableCell>
+                  <TableCell>{row.status}</TableCell>
+                  <TableCell>
+                    <Button className="py-2 px-5" secondary={true} onClick={() => props.confirm(row.id)}>Confirm</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button className="py-2 px-5" onClick={() => props.deleteOrder(row.id)}>Delete</Button>
+                  </TableCell>
+                </TableRow>
+              })
+            }
           </TableBody>
         </Table>
       </TableContainer>

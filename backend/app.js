@@ -485,7 +485,8 @@ app.post('/papilopay/pay', verifyToken, async(req,res)=>{
             shipping_type: 'Air Service',
             fee: 0,
             orderId: order.id,
-            transportCompanyId: transportCompany.id
+            transportCompanyId: transportCompany.id,
+            status: 'In Progress'
         })
 
         orders[key].price.forEach(async (val, index) => {
@@ -535,6 +536,54 @@ app.post('/order/get', verifyToken, async(req,res)=>{
 
 // shipping
 app.post('/shipping/get', verifyToken, async(req,res)=>{
+    const transshipment = await model.shippingDetails.findAll({
+        where: {transportCompanyId: req.decode.id}
+    })
+
+    res.send({
+        status: "ok",
+        transshipment
+    });
+})
+
+app.post('/shipping/confirm', verifyToken, async(req,res)=>{
+    if(req.decode.role != 'transportCompany'){
+        res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+
+    let body = req.body
+
+
+    let editedTransshipment = await model.shippingDetails.findOne({where: {id : body.id}})
+    editedTransshipment.status = "Done"
+    await editedTransshipment.save()
+
+    const transshipment = await model.shippingDetails.findAll({
+        where: {transportCompanyId: req.decode.id}
+    })
+    
+    res.send({
+        status : "ok",
+        transshipment
+    })
+
+})
+
+app.post('/shipping/delete', verifyToken, async(req,res)=>{
+    if(req.decode.role != 'transportCompany'){
+        res.send({
+            "status" : "failed",
+            "msg" : "role is incorrect"
+        })
+    }
+
+    await model.shippingDetails.destroy({
+        where: {id: req.body.id}
+    })
+
     const transshipment = await model.shippingDetails.findAll({
         where: {transportCompanyId: req.decode.id}
     })

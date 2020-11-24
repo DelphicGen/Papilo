@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from 'react'
+import React, { useReducer, useEffect, useState, useCallback } from 'react'
 import { RemoveRedEye, Clear } from '@material-ui/icons'
 import SearchIcon from '@material-ui/icons/Search';
 import { validate } from '../../util/validator'
@@ -39,6 +39,11 @@ const Input = props => {
 
     const [hidden, setHidden] = useState(true)
 
+
+    const clearHandler = useCallback(() => {
+        dispatch({ type: 'CLEAR', val: '', validators: props.validators })
+    }, [props.validators])
+
     useEffect(() => {
         onInput && onInput(id, value, isValid)
     }, [onInput, id, value, isValid])
@@ -49,7 +54,7 @@ const Input = props => {
             props.setReset(false)
         }
         
-    }, [props])
+    }, [clearHandler, props])
 
     const changeHandler = event => {
         dispatch({ type: 'CHANGE', val: event.target.value, validators: props.validators })
@@ -57,10 +62,6 @@ const Input = props => {
 
     const touchHandler = () => {
         dispatch({ type: 'TOUCH' })
-    }
-
-    const clearHandler = () => {
-        dispatch({ type: 'CLEAR', val: '', validators: props.validators })
     }
 
     const inputElement = (

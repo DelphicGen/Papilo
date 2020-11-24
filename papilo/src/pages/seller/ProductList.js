@@ -38,7 +38,7 @@ const ProductList = () => {
     return (
         <Container>
             <div style={{minHeight: 'calc(100vh - 216px)'}}>
-                <Header heading="Dashboard" className="text-right" />
+                <Header heading="Your Products" className="text-right" />
                 <Link className="ml-auto w-fit-content block" to="/add">
                     <Button className="px-5 py-2">
                         Add
