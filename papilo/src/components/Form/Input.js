@@ -48,7 +48,7 @@ const Input = props => {
             clearHandler()
             props.setReset(false)
         }
-
+        
     }, [props])
 
     const changeHandler = event => {
@@ -69,7 +69,7 @@ const Input = props => {
             style={{ width: props.width, maxWidth: props.maxWidth }}
             id={props.id}
             type={props.type !== 'password' ? props.type : hidden ? 'password' : 'text'}
-            value={props.value ? props.value : inputState.value}
+            value={props.value && inputState.value.length === 0 ? props.value : inputState.value}
             placeholder={props.placeholder}
             required={props.required}
             onChange={props.handleChange ? props.handleChange : changeHandler}

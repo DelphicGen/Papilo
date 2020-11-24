@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 
 const Login = React.lazy(() => import('./pages/auth/Login'))
 const Register = React.lazy(() => import('./pages/auth/Register'))
+const EditProfile = React.lazy(() => import('./pages/auth/EditProfile'))
 
 const HomePage = React.lazy(() => import('./pages/customer/HomePage'))
 const Cart = React.lazy(() => import('./pages/customer/Cart'))
@@ -50,6 +51,7 @@ const App = () => {
                     <Route path="/" component={HomePage} exact />
                     <Route path="/cart" component={Cart} exact />
                     <Route path="/checkout" component={Checkout} exact />
+                    <Route path="/edit/profile" component={EditProfile} exact />
                     <Redirect to="/" />
                 </Switch>
             ))
@@ -60,12 +62,14 @@ const App = () => {
                     <Route path="/list" component={ProductList} exact />
                     <Route path="/add" component={AddProduct} exact />
                     <Route path="/edit" component={EditProduct} exact />
+                    <Route path="/edit/profile" component={EditProfile} exact />
                 </Switch>
             ))
         } else if(role === 'transportCompany') {
             setRoutes((
                 <Switch>
                     <Route path="/" component={Transshipment} exact />
+                    <Route path="/edit/profile" component={EditProfile} exact />
                 </Switch>
             ))
         }

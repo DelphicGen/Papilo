@@ -3,6 +3,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { removeRole, clearCart } from '../../actions/action'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const Anchors = props => {
 
@@ -35,6 +36,9 @@ const Anchors = props => {
                     <Link to="/cart">
                         <ShoppingCartIcon className="mr-5" fontSize="large" />
                     </Link>
+                    <Link to="/edit/profile">
+                        <AccountCircleIcon className="mr-5" fontSize="large" />
+                    </Link>
                     <button onClick={logout}>Logout</button>
                 </>
             ))
@@ -42,12 +46,18 @@ const Anchors = props => {
             setAnchors((
                 <>
                     <Link className="mr-5" to="/list">Your Products</Link>
+                    <Link to="/edit/profile">
+                        <AccountCircleIcon className="mr-5" fontSize="large" />
+                    </Link>
                     <button onClick={logout}>Logout</button>
                 </>
             ))
         } else if(role === 'transportCompany') {
             setAnchors((
                 <>
+                    <Link to="/edit/profile">
+                        <AccountCircleIcon className="mr-5" fontSize="large" />
+                    </Link>
                     <button onClick={logout}>Logout</button>
                 </>
             ))

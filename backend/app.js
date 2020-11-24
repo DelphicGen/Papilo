@@ -50,10 +50,6 @@ app.post('/customer/login',async(req,res)=>{
         })
     }
 
-    // const papilopay = await model.papilopay.findAll({
-    //     where: {customerId: customer.id}
-    // })
-
     let payload = {
         "role" : "customer",
         "id" : customer.id
@@ -63,10 +59,58 @@ app.post('/customer/login',async(req,res)=>{
     return res.send({
         "status": "ok",
         "role" : "customer",
-        // "papilopay": papilopay,
         token
     })
 
+})
+
+app.post('/customer/retrieve/data', verifyToken, async (req, res) => {
+
+    if (req.decode.role != 'customer') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+
+    const customer = await model.customer.findOne({ id: req.decode.id })
+    if (customer == null) {
+        return res.send({
+            "status": "failed",
+            "msg": 'user does not exist'
+        })
+    }
+    return res.send({
+        "status": 'ok',
+        "data": customer
+    })
+})
+
+app.post('/customer/update', verifyToken, async (req, res) => {
+    let body = req.body
+
+    if (req.decode.role != 'customer') {
+        res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+    let customer = await model.customer.findOne({ id: req.decode.id })
+    if (customer == null) {
+        return res.send({
+            "status": "failed",
+            "msg": "user does not exist"
+        })
+    }
+    customer.address = body.address
+    customer.name = body.name
+    customer.handphone = body.handphone
+    customer.city = body.city
+    customer.save()
+
+    return res.send({
+        status: "ok"
+    })
 })
 
 // Seller
@@ -124,6 +168,55 @@ app.post('/seller/login',async(req,res)=>{
 
 })
 
+app.post('/seller/retrieve/data', verifyToken, async (req, res) => {
+
+    if (req.decode.role != 'seller') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+
+    const seller = await model.seller.findOne({ id: req.decode.id })
+    if (seller == null) {
+        return res.send({
+            "status": "failed",
+            "msg": 'user does not exist'
+        })
+    }
+    return res.send({
+        "status": 'ok',
+        "data": seller
+    })
+})
+
+app.post('/seller/update', verifyToken, async (req, res) => {
+    let body = req.body
+
+    if (req.decode.role != 'seller') {
+        res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+    let seller = await model.seller.findOne({ id: req.decode.id })
+    if (seller == null) {
+        return res.send({
+            "status": "failed",
+            "msg": "user does not exist"
+        })
+    }
+    seller.address = body.address
+    seller.storeName = body.storeName
+    seller.handphone = body.handphone
+    seller.city = body.city
+    seller.save()
+
+    return res.send({
+        status: "ok"
+    })
+})
+
 // Transport
 app.post('/transport/register',async (req,res) => {
     let body = req.body
@@ -175,6 +268,55 @@ app.post('/transport/login',async(req,res)=>{
         "status": "ok",
         "role" : "transportCompany",
         token
+    })
+})
+
+app.post('/transport/retrieve/data', verifyToken, async (req, res) => {
+
+    if (req.decode.role != 'transportCompany') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+
+    const transportCompany = await model.transportCompany.findOne({ id: req.decode.id })
+    if (transportCompany == null) {
+        return res.send({
+            "status": "failed",
+            "msg": 'user does not exist'
+        })
+    }
+    return res.send({
+        "status": 'ok',
+        "data": transportCompany
+    })
+})
+
+app.post('/transport/update', verifyToken, async (req, res) => {
+    let body = req.body
+
+    if (req.decode.role != 'transportCompany') {
+        res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
+    let transportCompany = await model.transportCompany.findOne({ id: req.decode.id })
+    if (transportCompany == null) {
+        return res.send({
+            "status": "failed",
+            "msg": "user does not exist"
+        })
+    }
+    transportCompany.address = body.address
+    transportCompany.storeName = body.storeName
+    transportCompany.handphone = body.handphone
+    transportCompany.city = body.city
+    transportCompany.save()
+
+    return res.send({
+        status: "ok"
     })
 })
 
@@ -258,13 +400,13 @@ app.post('/product/delete', verifyToken, async(req,res)=>{
     });
 })
 
-app.post('/product/search', async (req, res) => {
-    // if (req.decode.role != 'customer') {
-    //     return res.send({
-    //         "status": "failed",
-    //         "msg": "role is incorrect"
-    //     })
-    // }
+app.post('/product/search', verifyToken, async (req, res) => {
+    if (req.decode.role != 'customer') {
+        return res.send({
+            "status": "failed",
+            "msg": "role is incorrect"
+        })
+    }
 
     let body = req.body
     let products = await model.product.findAll({

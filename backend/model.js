@@ -22,6 +22,18 @@ const customer = sequelize.define('customer',{
   password : {
     type : DataTypes.STRING
   },
+  name :{
+      type : DataTypes.STRING
+  },
+  address : {
+    type : DataTypes.STRING
+  },
+  handphone : {
+      type : DataTypes.STRING
+  },
+  city : {
+      type : DataTypes.STRING
+  },
 })
 
 const seller = sequelize.define('seller',{
@@ -39,7 +51,16 @@ const seller = sequelize.define('seller',{
     },
     storeName :{
         type : DataTypes.STRING
-    }
+    },
+    address : {
+      type : DataTypes.STRING
+    },
+    handphone : {
+        type : DataTypes.STRING
+    },
+    city : {
+        type : DataTypes.STRING
+    },
 })
 
 const transportCompany = sequelize.define('transportCompany',{
@@ -57,7 +78,16 @@ const transportCompany = sequelize.define('transportCompany',{
     },
     companyName :{
         type : DataTypes.STRING
-    }
+    },
+    address : {
+      type : DataTypes.STRING
+    },
+    handphone : {
+        type : DataTypes.STRING
+    },
+    city : {
+        type : DataTypes.STRING
+    },
 })
 
 
