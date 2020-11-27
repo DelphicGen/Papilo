@@ -73,13 +73,14 @@ const Input = props => {
             value={props.value && inputState.value.length === 0 ? props.value : inputState.value}
             placeholder={props.placeholder}
             required={props.required}
+            data-testid={props.datatestid && props.datatestid}
             onChange={props.handleChange ? props.handleChange : changeHandler}
             onBlur={touchHandler} />
     )
 
     let errorTextElement
     if ((props.value && props.value.length === 0) || (!props.value && !inputState.isValid && inputState.isTouched)) {
-        errorTextElement = <p className="text-xs text-red-700 font-medium tracking-wider mt-2 mb-3" style={props.width && {width: props.width}}>{props.errorText}</p>
+        errorTextElement = <p data-testid="error-message" className="text-xs text-red-700 font-medium tracking-wider mt-2 mb-3" style={props.width && {width: props.width}}>{props.errorText}</p>
     }
 
     const labelElement = (

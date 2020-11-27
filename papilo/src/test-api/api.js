@@ -10,10 +10,6 @@ class Papilo {
             url: 'http://localhost:4000/product/get',
             headers: {'Content-Type': 'application/json'}
         })
-        //    .then(response => response.data.products[0].productName)
-        //    .catch(error => error)
-        // console.log(data)
-        // return data
    }
 }
 

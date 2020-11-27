@@ -4,7 +4,7 @@ import Input from '../../components/Form/Input'
 import Button from '../../components/UI/Button'
 import { useForm } from '../../hooks/form-hook'
 import Container from '../../components/UI/Container'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import Header from '../../components/UI/Header'
 import Axios from 'axios'
 import { useDispatch } from 'react-redux';
@@ -63,7 +63,7 @@ const Login = props => {
                     <Header heading="Login" />
                     <p className="text-center">
                         Belum punya akun ?  
-                        <Link to ="/register" className="text-red-700"> Register</Link>
+                        <NavLink to ="/register" className="text-red-700"> Register</NavLink>
                     </p>
 
                     <Input
@@ -74,6 +74,7 @@ const Login = props => {
                         onInput={inputHandler}
                         errorText="Please enter a valid email address."
                         width={300}
+                        datatestid="email"
                         required />
 
                     <Input
@@ -85,6 +86,7 @@ const Login = props => {
                         errorText="Password should has at least 8 characters."
                         width={300}
                         className="mb-5"
+                        datatestid="password"
                         required />
 
                     <CustomRadio label="Role" name="role" value={role} handleChange={handleRole} options={['Customer', 'Seller', 'Transport Company']} />

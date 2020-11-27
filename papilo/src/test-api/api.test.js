@@ -5,7 +5,7 @@ import Papilo from './api';
 jest.mock('axios');
 const mockLoadData = (Papilo.getAllProducts = jest.fn());
 
-it('get produts successfully', async () => {
+test('get produts successfully', async () => {
     mockLoadData.mockResolvedValue({
         products: [
             {
