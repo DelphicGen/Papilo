@@ -36,6 +36,9 @@ const Anchors = props => {
                     <Link to="/cart">
                         <ShoppingCartIcon className="mr-5" fontSize="large" />
                     </Link>
+                    <Link to="/topup" className="mr-5">
+                        Topup
+                    </Link>
                     <Link to="/edit/profile">
                         <AccountCircleIcon className="mr-5" fontSize="large" />
                     </Link>

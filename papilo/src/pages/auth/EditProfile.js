@@ -49,7 +49,6 @@ const EditProfile = props => {
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                console.log(response)
                 if(role === 'customer') inputHandler('name', response.data.data.name, true)
                 else if(role === 'seller') inputHandler('name', response.data.data.storeName, true)
                 else inputHandler('name', response.data.data.companyName, true)

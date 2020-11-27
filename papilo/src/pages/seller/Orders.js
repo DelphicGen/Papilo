@@ -15,8 +15,6 @@ const Orders = () => {
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                // console.log(response.data.orderDetails)
-                console.log(response)
                 setOrders(response.data.orderDetails)
             })
     }, [])

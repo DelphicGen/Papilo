@@ -434,6 +434,33 @@ app.post('/papilopay/get', verifyToken, async(req,res)=>{
     });
 })
 
+app.post('/papilopay/topup', verifyToken, async(req,res)=>{
+    let body = req.body
+    let date = new Date();
+    date = date.getUTCFullYear() + '-' +
+        ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
+        ('00' + date.getUTCDate()).slice(-2) + ' ' + 
+        ('00' + date.getUTCHours()).slice(-2) + ':' + 
+        ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
+        ('00' + date.getUTCSeconds()).slice(-2);
+
+    const topup = await model.topup.create({
+        "tanggal": date,
+        "jumlah" : body.amount,
+        "customerId" : req.decode.id
+    })
+
+    const papilopay = await model.papilopay.findOne({
+        where: {customerId: req.decode.id}
+    })
+    papilopay.amount += body.amount
+    papilopay.save()
+
+    res.send({
+        status: "ok"
+    });
+})
+
 app.post('/papilopay/pay', verifyToken, async(req,res)=>{
     let body = req.body
     let orders = {}
@@ -517,7 +544,6 @@ app.post('/order/get', verifyToken, async(req,res)=>{
         const temp = await model.orderDetails.findAll({
             where: {orderId: order.id}
         })
-
         for(const tempVal of temp) {
             const temp2 = await model.product.findOne({
                 where: {id: tempVal.productId}
@@ -555,7 +581,6 @@ app.post('/shipping/confirm', verifyToken, async(req,res)=>{
     }
 
     let body = req.body
-
 
     let editedTransshipment = await model.shippingDetails.findOne({where: {id : body.id}})
     editedTransshipment.status = "Done"

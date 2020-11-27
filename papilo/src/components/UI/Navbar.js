@@ -43,7 +43,7 @@ const Navbar = () => {
                 {
                     role === 'customer' && window.location.href === 'http://localhost:3000/' &&
                     <div className="relative mr-5">
-                        <input style={{height: 39}} className="pl-2 text-red-700" placeholder="Search" value={query.query} onChange={e => dispatch(setQuery(e.target.value))} />
+                        <input style={{height: 39}} className="pl-2 text-red-700" placeholder="Search" value={query.query} onChange={e => dispatch(setQuery(e.target.value))} data-testid="search-input" />
                         <button className="bg-white absolute top-0 right-0 border-l-2 border-red-700 flex items-center px-2 cursor-pointer" style={{ height: 39 }} onClick={() => dispatch(search())}>
                             <Search color="secondary" />
                         </button>

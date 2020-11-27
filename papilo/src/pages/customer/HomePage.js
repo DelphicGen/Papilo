@@ -5,13 +5,14 @@ import Container from '../../components/UI/Container'
 import { addToCart, resetSearch } from '../../actions/action'
 import { useDispatch, useSelector } from 'react-redux'
 import Hero from '../../assets/hero.png'
-import Axios from 'axios'
+import axios from 'axios'
 import Shirt from '../../assets/products/shirt.jpg'
 import Pants from '../../assets/products/pants.jpg'
 import Shoes from '../../assets/products/shoes.png'
 import Bag from '../../assets/products/bag.jpg'
 import Accessory from '../../assets/products/accessory.jpg'
 import { motion } from 'framer-motion';
+import Papilo from '../../test-api/api'
 
 const hero = {
     hidden: {
@@ -46,16 +47,25 @@ const HomePage = () => {
     
     const {query} = useSelector(state => state)
     const [products, setProducts] = useState([])
+    
 
     useEffect(() => {
 
-        Axios({
+        axios({
             method: 'POST',
             url: 'http://localhost:4000/product/get',
         })
             .then(response => {
+                console.log(response)
                 setProducts(response.data.products)
             })
+        // const getData = async () => {
+        //     const products = await Papilo.getAllProducts();
+        //     // console.log(products.data.products)
+        //     setProducts(products.data.products);
+        // };
+    
+        // getData();
     }, [])
     
     useEffect(() => {
@@ -64,15 +74,15 @@ const HomePage = () => {
             if(query.query.length === 0) url = 'http://localhost:4000/product/get'
             else url = 'http://localhost:4000/product/search'
 
-            Axios({
+            axios({
                 method: 'POST',
                 url: url,
                 data: {
                     query: query.query
-                }
+                },
+                headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
             })
                 .then(response => {
-                    console.log(response)
                     setProducts(response.data.products)
                     dispatch(resetSearch())
                 })

@@ -14,6 +14,7 @@ const EditProfile = React.lazy(() => import('./pages/auth/EditProfile'))
 const HomePage = React.lazy(() => import('./pages/customer/HomePage'))
 const Cart = React.lazy(() => import('./pages/customer/Cart'))
 const Checkout = React.lazy(() => import('./pages/customer/Checkout'))
+const Topup = React.lazy(() => import('./pages/customer/Topup'))
 
 const Orders = React.lazy(() => import('./pages/seller/Orders'))
 const ProductList = React.lazy(() => import('./pages/seller/ProductList'))
@@ -51,6 +52,7 @@ const App = () => {
                     <Route path="/" component={HomePage} exact />
                     <Route path="/cart" component={Cart} exact />
                     <Route path="/checkout" component={Checkout} exact />
+                    <Route path="/topup" component={Topup} exact />
                     <Route path="/edit/profile" component={EditProfile} exact />
                     <Redirect to="/" />
                 </Switch>

@@ -14,7 +14,6 @@ const Transshipment = () => {
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                console.log(response)
                 setTransshipment(response.data.transshipment)
             })
     }, []);
@@ -29,7 +28,6 @@ const Transshipment = () => {
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                console.log(response)
                 setTransshipment(response.data.transshipment)
             })
     }
@@ -44,7 +42,6 @@ const Transshipment = () => {
             headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') }
         })
             .then(response => {
-                console.log(response)
                 setTransshipment(response.data.transshipment)
             })
     }
